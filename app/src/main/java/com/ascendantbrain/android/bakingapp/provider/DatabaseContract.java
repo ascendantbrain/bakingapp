@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
  */
 public class DatabaseContract {
 
-    public static final String CONTENT_AUTHORITY = "com.ascendantbrain.easyrecipe";
+    public static final String CONTENT_AUTHORITY = "com.ascendantbrain.bakingapp";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_RECIPE = "recipe";
