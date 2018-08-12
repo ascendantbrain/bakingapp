@@ -1,2 +1,2 @@
-# easyrecipe
+# Baking App
 Udacity project
