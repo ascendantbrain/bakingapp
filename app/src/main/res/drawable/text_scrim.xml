@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="90"
+        android:centerY="0.3"
+        android:startColor="#CC000000"
+        android:centerColor="#66000000"
+        android:endColor="#00000000"
+        android:type="linear"/>
+
+    <!--android:angle="integer"-->
+    <!--android:centerX="float"-->
+    <!--android:centerY="float"-->
+    <!--android:centerColor="integer"-->
+    <!--android:endColor="color"-->
+    <!--android:gradientRadius="integer"-->
+    <!--android:startColor="color"-->
+    <!--android:type=["linear" | "radial" | "sweep"]-->
+    <!--android:useLevel=["true" | "false"] />-->
+</shape>
