@@ -19,7 +19,6 @@ public class DataService {
     private static final boolean DEBUG = true;
 
     public static void asyncFetch(Context context) {
-        // TODO: implement job service to periodically refresh data
         final Context appContext = context.getApplicationContext();
 
         ResultListener listener = new ResultListener() {

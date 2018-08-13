@@ -46,7 +46,6 @@ public class IngredientAdapter extends CursorRecyclerViewAdapter<IngredientAdapt
 
         public void bind(Ingredient ingredient) {
 
-            // FIXME: double format output is missing decimal places
             String ingredientText = String.format(Locale.US,"\u25CF  %s %s %s",
                     FormatHelper.formatDouble(Locale.US,ingredient.quantity),
                     ingredient.measure,

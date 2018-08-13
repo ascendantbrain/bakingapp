@@ -11,7 +11,7 @@
     android:orientation="vertical"
     android:background="@color/windowBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
     app:spanCount="1"
     tools:listitem="@layout/item_recipe_card"
     tools:context=".ui.RecipeListActivity">

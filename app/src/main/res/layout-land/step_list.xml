@@ -36,7 +36,7 @@
         android:maxHeight="200dp"
         android:layout_marginTop="8dp"
         android:paddingBottom="8dp"
-        app:layoutManager="GridLayoutManager"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="2"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/stepLabel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="LinearLayoutManager"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:context="com.ascendantbrain.android.bakingapp.ui.StepListActivity"
         tools:listitem="@layout/item_step" />
 
