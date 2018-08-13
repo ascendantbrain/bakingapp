@@ -1,5 +1,7 @@
 package com.ascendantbrain.android.bakingapp.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -63,6 +65,7 @@ public class StepListActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(!extras.isEmpty() && extras.containsKey(KEY_RECIPE_ID)) {
             mRecipeId = extras.getInt(KEY_RECIPE_ID);
+            updateAppWidgetContents(mRecipeId);
         } else finish();
 
         setContentView(R.layout.activity_step_list);
@@ -117,6 +120,15 @@ public class StepListActivity extends AppCompatActivity {
                     .replace(R.id.step_detail_container, fragment, TAG_STEP_DETAIL_FRAGMENT)
                     .commit();
         }
+    }
+
+    private void updateAppWidgetContents(int recipeId) {
+        Context context = StepListActivity.this;
+        SharedPrefUtil.setCurrentRecipeId(context,recipeId);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,IngredientWidget.class));
+
+        IngredientWidget.updateAppWidgets(context,appWidgetManager,appWidgetIds);
     }
 
     private static class LoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor> {

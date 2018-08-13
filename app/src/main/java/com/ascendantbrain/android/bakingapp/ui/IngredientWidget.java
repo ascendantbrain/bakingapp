@@ -3,6 +3,7 @@ package com.ascendantbrain.android.bakingapp.ui;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
@@ -12,6 +13,7 @@ import android.widget.RemoteViews;
 
 import com.ascendantbrain.android.bakingapp.R;
 import com.ascendantbrain.android.bakingapp.model.Ingredient;
+import com.ascendantbrain.android.bakingapp.model.Recipe;
 import com.ascendantbrain.android.bakingapp.provider.DatabaseContract;
 import com.ascendantbrain.android.bakingapp.utils.FormatHelper;
 
@@ -22,31 +24,55 @@ import java.util.Locale;
  */
 public class IngredientWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    static void updateAppWidgets(Context context, AppWidgetManager appWidgetManager,
+                                int[] appWidgetIds) {
 
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_widget);
-        String ingredients = getIngredients(context);
-        views.setTextViewText(R.id.ingredient_list, ingredients);
+        // There may be multiple widgets active, so update all of them
+        for (int appWidgetId : appWidgetIds) {
 
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+            // Construct the RemoteViews object
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_widget);
+            int recipeId = SharedPrefUtil.getCurrentRecipeId(context);
+            String recipeName = getRecipeTitle(context,recipeId);
+            String ingredients = getIngredients(context,recipeId);
+            views.setTextViewText(R.id.title, recipeName);
+            views.setTextViewText(R.id.ingredient_list, ingredients);
+
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+        updateAppWidgets(context, appWidgetManager, appWidgetIds);
     }
 
-    public static String getIngredients(Context context) {
+    public static String getRecipeTitle(Context context, int recipeId) {
+        String title = "Ingredients";  // display default title when no recipes exist
+        Context appContext = context.getApplicationContext();
+        Cursor cursor = appContext.getContentResolver().query(
+                DatabaseContract.Recipe.buildRecipeUri(recipeId),
+                Recipe.getProjection(),null,null,
+                Recipe.getSortOrder());
+        if(cursor == null) return "";
+
+        try{
+            while(cursor.moveToNext()) {
+                Recipe recipe = Recipe.fromCursor(cursor);
+                if(recipe!=null) title = recipe.name;
+            }
+        } catch (Exception e) { Log.e("IngredientWidget",Log.getStackTraceString(e)); }
+        finally { cursor.close(); }
+
+        return title;
+    }
+
+    public static String getIngredients(Context context, int recipeId) {
 
         Context appContext = context.getApplicationContext();
         Cursor cursor = appContext.getContentResolver().query(
-                DatabaseContract.Ingredient.buildRecipeIngredientsUri(1),
+                DatabaseContract.Ingredient.buildRecipeIngredientsUri(recipeId),
                 Ingredient.getProjection(),null,null,
                 Ingredient.getSortOrder());
         if(cursor == null) return "";
